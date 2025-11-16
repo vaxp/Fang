@@ -155,23 +155,7 @@ sudo apt install libgtk-3-dev libwebkit2gtk-4.1-dev build-essential pkg-config
 
 **Result:** ~28KB binary, fast startup, smooth performance
 
-## 📊 Line Count Breakdown
 
-```
-gtk_browser.cc:  355 lines    100% of core logic
-Makefile:         13 lines    Build configuration
-Total:           368 lines    Entire browser project
-```
-
-## 🎓 Learning Path
-
-To understand the codebase:
-
-1. Read `gtk_browser.cc` header comments
-2. Understand the `BrowserApp` struct (lines 12-20)
-3. Read `main()` function (lines 200-350)
-4. Study callback functions (lines 22-130)
-5. Modify and rebuild to learn
 
 ## 🔍 Quick Debug
 
@@ -183,20 +167,12 @@ View debug output:
 ## 📈 Performance Characteristics
 
 - **Binary Size:** 28 KB
-- **Memory Usage:** ~150-200 MB (with browser content)
+- **Memory Usage:** ~20-40 MB (with browser content)
 - **Startup Time:** < 1 second
 - **Rendering:** GPU-accelerated via WebKit2
 - **Build Time:** < 5 seconds
 
-## 🎯 Key Files for Different Tasks
 
-| Task | File | Lines |
-|------|------|-------|
-| Add UI element | `gtk_browser.cc` | ~230-250 |
-| Handle click | `gtk_browser.cc` | ~50-80 |
-| Load URL | `gtk_browser.cc` | ~20-30 |
-| Change settings | `gtk_browser.cc` | ~280-300 |
-| Configure build | `Makefile` | ~1-13 |
 
 ## ✨ Summary
 
@@ -207,15 +183,6 @@ View debug output:
 - **To Develop:** Edit `gtk_browser.cc` → Run `make` → Test
 - **Binary Location:** `./vaxp-browser`
 
-## 🗂️ What Was Removed
-
-All Flutter-related files have been deleted:
-- ❌ `pubspec.yaml` (Flutter dependencies)
-- ❌ `lib/main.dart` (Flutter UI code)
-- ❌ `analysis_options.yaml` (Flutter linting)
-- ❌ `.dart_tool/` (Flutter tools)
-- ❌ `.flutter_tool/` (Flutter cache)
-- ❌ `build/` (Old build artifacts)
 
 **The browser is now a clean, pure native C/GTK application** ✓
 
