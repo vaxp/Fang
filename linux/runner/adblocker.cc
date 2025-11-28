@@ -1,4 +1,6 @@
 #include "adblocker.h"
+#include "fingerprint_profiles.h"
+#include "privacy_script.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -355,50 +357,6 @@ static const char *DEFAULT_ADS_JSON =
 "  }"
 "]";
 
-// JavaScript to inject for anti-fingerprinting
-static const char *PRIVACY_SCRIPT = 
-"(() => {"
-"  /* Spoof Navigator properties */"
-"  const spoofedUserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';"
-"  const spoofedPlatform = 'Win32';"
-"  const spoofedHardwareConcurrency = 4;"
-"  const spoofedDeviceMemory = 8;"
-""
-"  Object.defineProperty(navigator, 'userAgent', { get: () => spoofedUserAgent });"
-"  Object.defineProperty(navigator, 'platform', { get: () => spoofedPlatform });"
-"  Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => spoofedHardwareConcurrency });"
-"  Object.defineProperty(navigator, 'deviceMemory', { get: () => spoofedDeviceMemory });"
-"  Object.defineProperty(navigator, 'maxTouchPoints', { get: () => 0 });"
-""
-"  /* Canvas Fingerprinting Protection (Add noise) */"
-"  const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;"
-"  HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {"
-"    const context = this.getContext('2d');"
-"    if (context) {"
-"      const width = this.width;"
-"      const height = this.height;"
-"      const imageData = context.getImageData(0, 0, width, height);"
-"      for (let i = 0; i < 10; i++) {"
-"        const x = Math.floor(Math.random() * width);"
-"        const y = Math.floor(Math.random() * height);"
-"        const index = (y * width + x) * 4;"
-"        imageData.data[index] = imageData.data[index] + 1;"
-"      }"
-"      context.putImageData(imageData, 0, 0);"
-"    }"
-"    return originalToDataURL.apply(this, arguments);"
-"  };"
-""
-"  /* WebGL Fingerprinting Protection */"
-"  const getParameter = WebGLRenderingContext.prototype.getParameter;"
-"  WebGLRenderingContext.prototype.getParameter = function(parameter) {"
-"    // Spoof renderer info"
-"    if (parameter === 37445) return 'Google Inc. (NVIDIA)';"
-"    if (parameter === 37446) return 'ANGLE (NVIDIA, NVIDIA GeForce GTX 1050 Ti Direct3D11 vs_5_0 ps_5_0, D3D11)';"
-"    return getParameter.apply(this, arguments);"
-"  };"
-"})();";
-
 static void on_filter_saved(WebKitUserContentFilterStore *store, GAsyncResult *result, gpointer user_data) {
   GError *error = NULL;
   WebKitUserContentFilter *filter = webkit_user_content_filter_store_save_finish(store, result, &error);
@@ -491,27 +449,136 @@ void apply_privacy_settings(WebKitWebView *web_view, BrowserApp *app) {
   WebKitSettings *settings = webkit_web_view_get_settings(web_view);
   WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager(web_view);
   
-  // Remove existing privacy scripts (if any) - simplified by removing all scripts for now
-  // In a real app we'd track script objects to remove specific ones
+  // Remove existing privacy scripts
   webkit_user_content_manager_remove_all_scripts(manager);
   
-  if (app->privacy_enabled) {
-    // Spoof User-Agent
-    webkit_settings_set_user_agent(settings, 
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+  if (app->privacy_enabled && app->current_profile) {
+    // Set User-Agent from profile
+    webkit_settings_set_user_agent(settings, app->current_profile->user_agent);
       
-    // Inject Privacy Script
-    WebKitUserScript *script = webkit_user_script_new(
-      PRIVACY_SCRIPT,
-      WEBKIT_USER_CONTENT_INJECT_TOP_FRAME,
-      WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START,
-      NULL, NULL
-    );
-    webkit_user_content_manager_add_script(manager, script);
-    webkit_user_script_unref(script);
-    
+    // Generate and inject comprehensive privacy script
+    gchar *privacy_script = generate_privacy_script(app->current_profile);
+    if (privacy_script) {
+      WebKitUserScript *script = webkit_user_script_new(
+        privacy_script,
+        WEBKIT_USER_CONTENT_INJECT_TOP_FRAME,
+        WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START,
+        NULL, NULL
+      );
+      webkit_user_content_manager_add_script(manager, script);
+      webkit_user_script_unref(script);
+      free_privacy_script(privacy_script);
+    }
   } else {
     // Reset to default
     webkit_settings_set_user_agent(settings, NULL);
   }
 }
+
+// ========== Fingerprint Management Functions ==========
+
+static gboolean on_profile_rotation_timer(gpointer user_data) {
+  BrowserApp *app = (BrowserApp *)user_data;
+  fingerprint_rotate_profile(app);
+  return TRUE; // Continue timer
+}
+
+void fingerprint_init(BrowserApp *app) {
+  // Initialize profile pool
+  fingerprint_profiles_init();
+  
+  // Select initial random profile
+  app->current_profile = fingerprint_get_random_profile();
+  
+  // Set rotation interval (5 seconds for aggressive, 0 for per-session only)
+  app->rotation_interval_seconds = 5; // Default to 5-second rotation as requested
+  app->webrtc_leak_protection = TRUE;
+  app->blocked_requests_count = 0;
+  app->session_start_time = time(NULL);
+  
+  // Start rotation timer if interval > 0
+  if (app->rotation_interval_seconds > 0) {
+    app->profile_rotation_timer_id = g_timeout_add_seconds(
+      app->rotation_interval_seconds,
+      on_profile_rotation_timer,
+      app
+    );
+    g_print("Fingerprint: Profile rotation enabled (every %d seconds)\n", 
+            app->rotation_interval_seconds);
+  } else {
+    app->profile_rotation_timer_id = 0;
+    g_print("Fingerprint: Per-session rotation mode\n");
+  }
+  
+  if (app->current_profile) {
+    g_print("Fingerprint: Initial profile: %s\n", app->current_profile->profile_name);
+  }
+}
+
+void fingerprint_rotate_profile(BrowserApp *app) {
+  if (!app) return;
+  
+  // Select new random profile
+  FingerprintProfile *old_profile = app->current_profile;
+  app->current_profile = fingerprint_get_random_profile();
+  
+  // Ensure we got a different profile
+  gint attempts = 0;
+  while (app->current_profile == old_profile && attempts < 10) {
+    app->current_profile = fingerprint_get_random_profile();
+    attempts++;
+  }
+  
+  if (app->current_profile) {
+    g_print("Fingerprint: Rotated to profile: %s\n", app->current_profile->profile_name);
+    
+    // Apply new profile to all existing tabs
+    GList *iter;
+    for (iter = app->tabs; iter != NULL; iter = iter->next) {
+      BrowserTab *tab = (BrowserTab *)iter->data;
+      if (tab && tab->web_view) {
+        fingerprint_apply_to_webview(tab->web_view, app);
+      }
+    }
+    
+    // Optional: Clear storage on rotation (can be configured)
+    // This is aggressive but maximizes privacy
+    WebKitWebsiteDataManager *data_manager = webkit_web_context_get_website_data_manager(app->web_context);
+    if (data_manager) {
+      webkit_website_data_manager_clear(
+        data_manager,
+        (WebKitWebsiteDataTypes)(WEBKIT_WEBSITE_DATA_LOCAL_STORAGE | WEBKIT_WEBSITE_DATA_SESSION_STORAGE),
+        0, // All time
+        NULL, NULL, NULL
+      );
+    }
+  }
+}
+
+void fingerprint_apply_to_webview(WebKitWebView *web_view, BrowserApp *app) {
+  if (!web_view || !app || !app->current_profile) return;
+  
+  // Apply privacy settings with current profile
+  apply_privacy_settings(web_view, app);
+  
+  // Note: The privacy script is injected in apply_privacy_settings
+  // which uses the current_profile to generate the script
+}
+
+void fingerprint_cleanup(BrowserApp *app) {
+  if (!app) return;
+  
+  // Stop rotation timer
+  if (app->profile_rotation_timer_id > 0) {
+    g_source_remove(app->profile_rotation_timer_id);
+    app->profile_rotation_timer_id = 0;
+  }
+  
+  // Cleanup profile pool
+  fingerprint_profiles_cleanup();
+  
+  app->current_profile = NULL;
+  
+  g_print("Fingerprint: Cleanup complete\n");
+}
+

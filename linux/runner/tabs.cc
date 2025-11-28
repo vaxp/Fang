@@ -27,6 +27,9 @@ BrowserTab* create_new_tab(BrowserApp *app, const gchar *uri) {
   // Apply privacy settings
   apply_privacy_settings(tab->web_view, app);
   
+  // Apply fingerprint profile
+  fingerprint_apply_to_webview(tab->web_view, app);
+  
   // Apply AdBlocker if enabled
   if (app->adblock_enabled && app->current_filter) {
     WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager(tab->web_view);

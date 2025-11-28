@@ -9,6 +9,9 @@
 #define BROWSER_NAME "Vaxp Browser"
 #define DEFAULT_HOME "https://www.google.com"
 
+// Forward declaration
+typedef struct FingerprintProfile FingerprintProfile;
+
 // Tab structure
 typedef struct {
   WebKitWebView *web_view;
@@ -54,6 +57,16 @@ typedef struct {
   WebKitUserContentFilter *current_filter;
   gboolean adblock_enabled;
   gboolean privacy_enabled;
+  
+  // Anti-fingerprinting
+  FingerprintProfile *current_profile;
+  guint profile_rotation_timer_id;
+  gint rotation_interval_seconds;  // 5 for aggressive rotation, 0 for per-session
+  gboolean webrtc_leak_protection;
+  
+  // Enhanced blocking statistics
+  guint64 blocked_requests_count;
+  time_t session_start_time;
 } BrowserApp;
 
 #endif // TYPES_H

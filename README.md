@@ -189,3 +189,8 @@ View debug output:
 ---
 
 **For full development guide, see: `BROWSER_ARCHITECTURE.md`**
+
+
+cd /home/x/Desktop/Fang
+make clean && make -j$(nproc)
+./vaxp-browser

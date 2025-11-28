@@ -30,6 +30,9 @@ int main(int argc, char *argv[]) {
   
   // Initialize AdBlocker
   adblocker_init(app);
+  
+  // Initialize Fingerprint Protection
+  fingerprint_init(app);
 
   // Create main window
   app->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
@@ -109,6 +112,8 @@ int main(int argc, char *argv[]) {
   gtk_main();
   
   // Cleanup
+  fingerprint_cleanup(app);
+  
   if (app->history_db) {
     sqlite3_close(app->history_db);
   }
