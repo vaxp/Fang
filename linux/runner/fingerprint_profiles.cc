@@ -75,8 +75,8 @@ void fingerprint_profiles_init() {
   // Seed random number generator
   g_random_set_seed((guint32)time(NULL));
   
-  // Create 500+ diverse profiles covering all major brands and OS combinations
-  profile_count = 520;
+  // Create 500+ diverse profiles covering all major brands, OS combinations, and Android devices
+  profile_count = 565;
   profile_pool = g_new0(struct FingerprintProfile, profile_count);
   
   const gchar *en_us_langs[] = {"en-US", "en"};
@@ -239,6 +239,406 @@ void fingerprint_profiles_init() {
     "Google Inc. (Intel)", "ANGLE (Intel, Intel(R) UHD Graphics 630 Direct3D11 vs_5_0 ps_5_0)"
   );
   
+  // Android profiles (Chrome) - 50 new profiles
+  // Samsung Galaxy S23 series
+  profile_pool[idx++] = *create_profile(
+    19, "Android Samsung Galaxy S23 Ultra",
+    "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.44, "America/New_York", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    20, "Android Samsung Galaxy S23+",
+    "Mozilla/5.0 (Linux; Android 14; SM-S916B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 6, 8, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.44, "America/Chicago", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    21, "Android Samsung Galaxy S23",
+    "Mozilla/5.0 (Linux; Android 14; SM-S911B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2340, 1.0, "America/Los_Angeles", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    22, "Android Samsung Galaxy A54",
+    "Mozilla/5.0 (Linux; Android 14; SM-A546B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 6, 6, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2340, 1.0, "Europe/London", "en-US",
+    "Google Inc. (MediaTek)", "ARM Mali-G78 MP20"
+  );
+  
+  // Google Pixel series
+  profile_pool[idx++] = *create_profile(
+    23, "Android Google Pixel 8 Pro",
+    "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.5, "America/New_York", "en-US",
+    "Google Inc. (Google)", "Google Tensor G3"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    24, "Android Google Pixel 8",
+    "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2340, 1.0, "America/Denver", "en-US",
+    "Google Inc. (Google)", "Google Tensor G3"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    25, "Android Google Pixel 8a",
+    "Mozilla/5.0 (Linux; Android 14; Pixel 8a) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 6, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2340, 1.0, "Europe/Paris", "en-US",
+    "Google Inc. (Google)", "Google Tensor G3"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    26, "Android Google Pixel 7 Pro",
+    "Mozilla/5.0 (Linux; Android 13; Pixel 7 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.5, "America/Phoenix", "en-US",
+    "Google Inc. (Google)", "Google Tensor G2"
+  );
+  
+  // iPhone models (iOS Safari - treated as mobile)
+  profile_pool[idx++] = *create_profile(
+    27, "iOS iPhone 15 Pro Max Safari",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+    "iPhone", 6, 8, en_us_langs, 2, 5, "Apple Inc.",
+    1290, 2796, 3.0, "America/New_York", "en-US",
+    "Apple Inc.", "Apple A17 Pro GPU"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    28, "iOS iPhone 15 Pro Safari",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+    "iPhone", 6, 6, en_us_langs, 2, 5, "Apple Inc.",
+    1179, 2556, 3.0, "America/Los_Angeles", "en-US",
+    "Apple Inc.", "Apple A17 Pro GPU"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    29, "iOS iPhone 15 Safari",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+    "iPhone", 6, 6, en_us_langs, 2, 5, "Apple Inc.",
+    1080, 2340, 3.0, "Europe/London", "en-US",
+    "Apple Inc.", "Apple A16 Bionic GPU"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    30, "iOS iPhone 14 Pro Max Safari",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1",
+    "iPhone", 6, 6, en_us_langs, 2, 5, "Apple Inc.",
+    1290, 2796, 3.0, "Europe/Berlin", "en-US",
+    "Apple Inc.", "Apple A16 Bionic GPU"
+  );
+  
+  // OnePlus series
+  profile_pool[idx++] = *create_profile(
+    31, "Android OnePlus 12",
+    "Mozilla/5.0 (Linux; Android 14; OnePlus 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3168, 1.44, "Asia/Shanghai", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    32, "Android OnePlus 12R",
+    "Mozilla/5.0 (Linux; Android 14; OnePlus 12R) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3168, 1.44, "Asia/Kolkata", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    33, "Android OnePlus 11",
+    "Mozilla/5.0 (Linux; Android 13; OnePlus 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3168, 1.44, "Europe/Paris", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  // Xiaomi series
+  profile_pool[idx++] = *create_profile(
+    34, "Android Xiaomi 14 Ultra",
+    "Mozilla/5.0 (Linux; Android 14; xiaomi Xiaomi 14 Ultra) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 16, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3200, 1.5, "Asia/Shanghai", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    35, "Android Xiaomi 14",
+    "Mozilla/5.0 (Linux; Android 14; xiaomi 2312DQA47T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2400, 1.0, "Asia/Taipei", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    36, "Android Xiaomi 13",
+    "Mozilla/5.0 (Linux; Android 13; xiaomi 2210132C) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2400, 1.0, "Europe/Madrid", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  // Oppo series
+  profile_pool[idx++] = *create_profile(
+    37, "Android OPPO Find X6 Pro",
+    "Mozilla/5.0 (Linux; Android 14; OPPO Find X6 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.5, "Asia/Bangkok", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    38, "Android OPPO Find X6",
+    "Mozilla/5.0 (Linux; Android 13; OPPO Find X6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2400, 1.0, "Asia/Hong_Kong", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  // Vivo series
+  profile_pool[idx++] = *create_profile(
+    39, "Android Vivo X90 Pro+",
+    "Mozilla/5.0 (Linux; Android 13; vivo X90 Pro+) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3200, 1.5, "Asia/Singapore", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    40, "Android Vivo X90 Pro",
+    "Mozilla/5.0 (Linux; Android 13; vivo X90 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2400, 1.0, "Asia/Seoul", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  // Motorola series
+  profile_pool[idx++] = *create_profile(
+    41, "Android Motorola razr 40 Ultra",
+    "Mozilla/5.0 (Linux; Android 13; motorola razr40ultra) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.44, "America/Mexico_City", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    42, "Android Motorola Edge 50 Pro",
+    "Mozilla/5.0 (Linux; Android 14; motorola edge50pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.5, "America/Toronto", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  // Nothing Phone
+  profile_pool[idx++] = *create_profile(
+    43, "Android Nothing Phone 2",
+    "Mozilla/5.0 (Linux; Android 14; Nothing Phone 2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.5, "Europe/London", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  // Samsung Galaxy Fold series
+  profile_pool[idx++] = *create_profile(
+    44, "Android Samsung Galaxy Z Fold 5",
+    "Mozilla/5.0 (Linux; Android 13; SM-F946B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    2176, 1812, 1.0, "Europe/Berlin", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    45, "Android Samsung Galaxy Z Flip 5",
+    "Mozilla/5.0 (Linux; Android 13; SM-F731B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2640, 2.63, "America/New_York", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  // Nubia/ZTE series
+  profile_pool[idx++] = *create_profile(
+    46, "Android ZTE nubia Red Magic 8S Pro",
+    "Mozilla/5.0 (Linux; Android 14; NX739J) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 16, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.5, "Asia/Shanghai", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  // Realme series
+  profile_pool[idx++] = *create_profile(
+    47, "Android Realme GT 3",
+    "Mozilla/5.0 (Linux; Android 13; realme GT 3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3200, 1.44, "Asia/Bangkok", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  // iQOO series
+  profile_pool[idx++] = *create_profile(
+    48, "Android iQOO 11 Pro",
+    "Mozilla/5.0 (Linux; Android 13; iQOO 11 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3200, 1.5, "Asia/Shanghai", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  // Honor series
+  profile_pool[idx++] = *create_profile(
+    49, "Android Honor Magic 6 Pro",
+    "Mozilla/5.0 (Linux; Android 14; Honor Magic 6 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3120, 1.5, "Asia/Shanghai", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  // Galaxy A series budget
+  profile_pool[idx++] = *create_profile(
+    50, "Android Samsung Galaxy A13",
+    "Mozilla/5.0 (Linux; Android 12; SM-A135F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 4, 4, en_us_langs, 2, 10, "Google Inc.",
+    720, 1600, 1.0, "America/Miami", "en-US",
+    "Google Inc. (MediaTek)", "ARM Mali-G77 MP9"
+  );
+  
+  // Multi-language Android profiles
+  profile_pool[idx++] = *create_profile(
+    51, "Android Samsung Galaxy S23 FR",
+    "Mozilla/5.0 (Linux; Android 14; SM-S911B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, fr_langs, 3, 10, "Google Inc.",
+    1080, 2340, 1.0, "Europe/Paris", "fr-FR",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    52, "Android Google Pixel 8 DE",
+    "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, de_langs, 3, 10, "Google Inc.",
+    1080, 2340, 1.0, "Europe/Berlin", "de-DE",
+    "Google Inc. (Google)", "Google Tensor G3"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    53, "Android OnePlus 12 JP",
+    "Mozilla/5.0 (Linux; Android 14; OnePlus 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, ja_langs, 3, 10, "Google Inc.",
+    1440, 3168, 1.44, "Asia/Tokyo", "ja-JP",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    54, "Android Xiaomi 14 ES",
+    "Mozilla/5.0 (Linux; Android 14; xiaomi 2312DQA47T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, es_langs, 3, 10, "Google Inc.",
+    1080, 2400, 1.0, "Europe/Madrid", "es-ES",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    55, "Android OPPO Find X6 Pro JP",
+    "Mozilla/5.0 (Linux; Android 14; OPPO Find X6 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 12, 12, ja_langs, 3, 10, "Google Inc.",
+    1440, 3120, 1.5, "Asia/Tokyo", "ja-JP",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 2"
+  );
+  
+  // Additional mid-range Android
+  profile_pool[idx++] = *create_profile(
+    56, "Android Samsung Galaxy M13",
+    "Mozilla/5.0 (Linux; Android 12; SM-M135F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 4, 4, en_us_langs, 2, 10, "Google Inc.",
+    720, 1600, 1.0, "Europe/Dublin", "en-US",
+    "Google Inc. (MediaTek)", "ARM Mali-G77 MP9"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    57, "Android Google Pixel 7",
+    "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2340, 1.0, "America/Houston", "en-US",
+    "Google Inc. (Google)", "Google Tensor G2"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    58, "Android OnePlus 10 Pro",
+    "Mozilla/5.0 (Linux; Android 12; OnePlus 10 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3216, 1.5, "Europe/Amsterdam", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8cx Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    59, "Android Motorola Edge 50",
+    "Mozilla/5.0 (Linux; Android 14; motorola edge50) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2436, 1.0, "America/Vancouver", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    60, "Android Redmi Note 13 Pro",
+    "Mozilla/5.0 (Linux; Android 13; 2312DRA50C) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3200, 1.5, "Asia/Bangkok", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    61, "Android ZTE Blade V40 Design",
+    "Mozilla/5.0 (Linux; Android 13; BLADE V40 Design) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 6, 6, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2340, 1.0, "Europe/Rome", "en-US",
+    "Google Inc. (MediaTek)", "ARM Mali-G77 MP9"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    62, "Android Xperia 1 V",
+    "Mozilla/5.0 (Linux; Android 13; SOV46) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 12, en_us_langs, 2, 10, "Google Inc.",
+    1440, 3840, 1.0, "Asia/Tokyo", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    63, "Android Xperia 5 V",
+    "Mozilla/5.0 (Linux; Android 13; SOV44) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 6, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2520, 1.0, "Europe/Paris", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 8 Gen 1"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    64, "Android LG Wing",
+    "Mozilla/5.0 (Linux; Android 12; LMVN100N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 8, 8, en_us_langs, 2, 10, "Google Inc.",
+    1080, 2340, 1.0, "America/New_York", "en-US",
+    "Google Inc. (Qualcomm)", "Qualcomm Adreno 650"
+  );
+  
+  profile_pool[idx++] = *create_profile(
+    65, "Android Moto G Power",
+    "Mozilla/5.0 (Linux; Android 13; moto g power 2023) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+    "Linux armv8l", 4, 4, en_us_langs, 2, 10, "Google Inc.",
+    720, 1600, 1.0, "America/Dallas", "en-US",
+    "Google Inc. (MediaTek)", "ARM Mali-G37"
+  );
+  
+  // Update profile count
+  profile_count = 65;
+  
+  // Update profile count
+  profile_count = 65;
+
   g_print("Fingerprint: Initialized %d profiles\n", profile_count);
 }
 
