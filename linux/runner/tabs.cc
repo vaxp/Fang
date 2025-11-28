@@ -1,6 +1,7 @@
 #include "tabs.h"
 #include "database.h"
 #include "adblocker.h"
+#include "network_blocker.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -292,6 +293,26 @@ void on_close_tab_clicked(GtkButton *button, BrowserApp *app) {
 
 gboolean on_decide_policy(WebKitWebView *web_view, WebKitPolicyDecision *decision,
                                  WebKitPolicyDecisionType decision_type, BrowserApp *app) {
+  
+  // Handle resource/navigation policies - block unwanted requests
+  if (decision_type == WEBKIT_POLICY_DECISION_TYPE_NAVIGATION_ACTION) {
+    WebKitNavigationPolicyDecision *nav_decision = WEBKIT_NAVIGATION_POLICY_DECISION(decision);
+    WebKitNavigationAction *action = webkit_navigation_policy_decision_get_navigation_action(nav_decision);
+    WebKitURIRequest *request = webkit_navigation_action_get_request(action);
+    const char *uri = webkit_uri_request_get_uri(request);
+    
+    // Check if URL should be blocked
+    if (should_block_request(uri)) {
+      app->blocked_requests_count++;
+      if (app->blocked_requests_count % 100 == 0) {
+        g_print("Network Blocker: Blocked %lu requests\n", app->blocked_requests_count);
+      }
+      webkit_policy_decision_ignore(decision);
+      return TRUE;
+    }
+  }
+  
+  // Handle response policies - for downloads
   if (decision_type == WEBKIT_POLICY_DECISION_TYPE_RESPONSE) {
     WebKitResponsePolicyDecision *response_decision = WEBKIT_RESPONSE_POLICY_DECISION(decision);
     WebKitURIResponse *response = webkit_response_policy_decision_get_response(response_decision);

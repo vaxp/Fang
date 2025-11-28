@@ -5,6 +5,7 @@
 
 void adblocker_init(BrowserApp *app);
 void adblocker_enable(BrowserApp *app, gboolean enable);
+gboolean adblocker_reload_filter(BrowserApp *app);
 void privacy_enable(BrowserApp *app, gboolean enable);
 void apply_privacy_settings(WebKitWebView *web_view, BrowserApp *app);
 

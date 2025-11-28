@@ -11,7 +11,10 @@ SOURCES = linux/runner/main.cc \
           linux/runner/ui.cc \
           linux/runner/adblocker.cc \
           linux/runner/fingerprint_profiles.cc \
-          linux/runner/privacy_script.cc
+          linux/runner/privacy_script.cc \
+          linux/runner/tracker_domains.cc \
+          linux/runner/network_blocker.cc \
+          linux/runner/adblockplus_integration.cc
 OBJECTS = $(SOURCES:.cc=.o)
 
 $(TARGET): $(OBJECTS)

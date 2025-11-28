@@ -75,8 +75,8 @@ void fingerprint_profiles_init() {
   // Seed random number generator
   g_random_set_seed((guint32)time(NULL));
   
-  // Create 18 realistic profiles covering Windows, macOS, and Linux
-  profile_count = 18;
+  // Create 500+ diverse profiles covering all major brands and OS combinations
+  profile_count = 520;
   profile_pool = g_new0(struct FingerprintProfile, profile_count);
   
   const gchar *en_us_langs[] = {"en-US", "en"};
