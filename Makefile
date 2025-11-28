@@ -3,7 +3,13 @@ CXXFLAGS = $(shell pkg-config --cflags webkit2gtk-4.1 gtk+-3.0) -Wall -Wextra -O
 LIBS = $(shell pkg-config --libs webkit2gtk-4.1 gtk+-3.0) -lsqlite3 -flto
 TARGET = vaxp-browser
 
-SOURCES = linux/runner/gtk_browser.cc
+SOURCES = linux/runner/main.cc \
+          linux/runner/database.cc \
+          linux/runner/history.cc \
+          linux/runner/bookmarks.cc \
+          linux/runner/tabs.cc \
+          linux/runner/ui.cc \
+          linux/runner/adblocker.cc
 OBJECTS = $(SOURCES:.cc=.o)
 
 $(TARGET): $(OBJECTS)
