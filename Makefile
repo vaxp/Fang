@@ -3,18 +3,18 @@ CXXFLAGS = $(shell pkg-config --cflags webkit2gtk-4.1 gtk+-3.0) -Wall -Wextra -O
 LIBS = $(shell pkg-config --libs webkit2gtk-4.1 gtk+-3.0) -lsqlite3 -flto
 TARGET = vaxp-browser
 
-SOURCES = linux/runner/main.cc \
-          linux/runner/database.cc \
-          linux/runner/history.cc \
-          linux/runner/bookmarks.cc \
-          linux/runner/tabs.cc \
-          linux/runner/ui.cc \
-          linux/runner/adblocker.cc \
-          linux/runner/fingerprint_profiles.cc \
-          linux/runner/privacy_script.cc \
-          linux/runner/tracker_domains.cc \
-          linux/runner/network_blocker.cc \
-          linux/runner/adblockplus_integration.cc
+SOURCES = fang/main.cc \
+          fang/database.cc \
+          fang/history.cc \
+          fang/bookmarks.cc \
+          fang/tabs.cc \
+          fang/ui.cc \
+          fang/adblocker.cc \
+          fang/fingerprint_profiles.cc \
+          fang/privacy_script.cc \
+          fang/tracker_domains.cc \
+          fang/network_blocker.cc \
+          fang/adblockplus_integration.cc
 OBJECTS = $(SOURCES:.cc=.o)
 
 $(TARGET): $(OBJECTS)
@@ -26,4 +26,7 @@ $(TARGET): $(OBJECTS)
 clean:
 	rm -f $(OBJECTS) $(TARGET)
 
-.PHONY: clean
+.PHONY: clean update-adblock
+
+update-adblock:
+	python3 tools/update_adblock.py

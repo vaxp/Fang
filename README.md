@@ -8,7 +8,7 @@
 
 | Component | Technology | Location | Purpose |
 |-----------|-----------|----------|---------|
-| **Browser Core** | C | `linux/runner/gtk_browser.cc` | Main application logic (355 lines) |
+| **Browser Core** | C | `fang/gtk_browser.cc` | Main application logic (355 lines) |
 | **GUI Framework** | GTK+ 3.0 | N/A | Window management, widgets, layout |
 | **Web Engine** | WebKit2gtk-4.1 | N/A | HTML/CSS/JS rendering (Chromium-based) |
 | **Build System** | GNU Make | `Makefile` | Compilation configuration |
@@ -28,7 +28,7 @@
 ### Where to Edit
 **Single file to modify:**
 ```
-/home/x/Desktop/flutter_application_3/linux/runner/gtk_browser.cc
+/home/x/Desktop/flutter_application_3/fang/gtk_browser.cc
 ```
 
 ### How to Build
@@ -74,7 +74,7 @@ flutter_application_3/
 
 ### Q3: Where do I develop it further?
 **Answer:** 
-- **Edit:** `linux/runner/gtk_browser.cc` (355 lines of C)
+- **Edit:** `fang/gtk_browser.cc` (355 lines of C)
 - **Build:** `make clean && make -j4`
 - **Run:** `./vaxp-browser`
 
