@@ -194,3 +194,6 @@ View debug output:
 cd /home/x/Desktop/Fang
 make clean && make -j$(nproc)
 ./vaxp-browser
+
+//osd_language
+gcc -o osd_watcher osd_language.c -lX11 -lXfixes -lXext -lcairo -lpthread
